@@ -9,13 +9,15 @@ def uk_text(path):
                 return jdict["text"]
 
 def get_basic_information(uktext):
-    reg = re.compile(r"{{(.+)}}")
-    searched = reg.search(uktext)
-    return searched.group(1)
+    regex = (r"^{{基礎情報 国"
+r"([\s\S]*)"
+r"^}}")
+    reg = re.compile(regex, re.MULTILINE)
+    finds = reg.findall(uktext)
+    return finds[0]
 
 uktext = uk_text("jawiki-country.json")
 text = get_basic_information(uktext)
-print(text)
 reg = re.compile(r"\|(.+) = (.+)", re.MULTILINE + re.VERBOSE)
 results = reg.findall(text)
 jdict = {}
